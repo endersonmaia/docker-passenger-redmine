@@ -1,0 +1,4 @@
+image/cache/*.*
+*.zip
+*.tar.gz
+*.gem

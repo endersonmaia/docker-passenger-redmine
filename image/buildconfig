@@ -1,0 +1,7 @@
+export LC_ALL=C
+export DEBIAN_FRONTEND=noninteractive
+minimal_apt_get_install='apt-get install -y --no-install-recommends'
+
+export APP_PATH=${REDMINE_APP_PATH}
+export DATA_PATH=${REDMINE_DATA_PATH}
+export CACHE_DIR=${BUILD_PATH}/cache

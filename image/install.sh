@@ -3,9 +3,13 @@ set -e
 source /build/buildconfig
 set -x
 
-APP_PATH=${REDMINE_APP_PATH}
-DATA_PATH=${REDMINE_DATA_PATH}
-CACHE_DIR=${BUILD_PATH}/cache
+# Enabling nginx and passenger
+rm -f /etc/service/nginx/down
+
+mkdir -p  $REDMINE_APP_PATH
+mkdir -p  $REDMINE_DATA_PATH
+
+cp $BUILD_PATH/redmine.init.sh /etc/my_init.d/30-redmine.sh
 
 # Install Redmine, use local copy if available
 if [ ! -f ${CACHE_DIR}/redmine-${REDMINE_VERSION}.tar.gz ]; then
@@ -45,7 +49,7 @@ if [ -d "${CACHE_DIR}" ]; then
   mv ${CACHE_DIR}/*.gem ${APP_PATH}/vendor/cache/
 fi
 
-cp ${APP_PATH}/config/database.yml.example ${APP_PATH}/config/database.yml
+cp ${BUILD_PATH}/config/redmine/database.yml ${APP_PATH}/config/database.yml
 cd ${APP_PATH}; /sbin/setuser app bundle install --without development tests --path ${APP_PATH}/vendor/bundle
 
 # Configuring nginx

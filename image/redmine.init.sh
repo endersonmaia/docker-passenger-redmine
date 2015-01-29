@@ -1,8 +1,7 @@
 #!/bin/bash
+set -e
+source /build/buildconfig
 set -x
-
-APP_PATH=${REDMINE_APP_PATH}
-DATA_PATH=${REDMINE_DATA_PATH}
 
 if [ ! -n "${MYSQL_PORT_3306_TCP_ADDR}" ]; then
   echo "ERROR: "
@@ -20,9 +19,6 @@ DB_NAME=${DB_NAME:-${MYSQL_ENV_MYSQL_DATABASE}}
 DB_NAME=${DB_NAME:-redmine_production}
 DB_USER=${DB_USER:-root}
 
-cp /build/config/redmine/database.yml ${APP_PATH}/config/database.yml
-
-/sbin/setuser app sed 's/{{DB_ADAPTER}}/mysql2/' -i ${APP_PATH}/config/database.yml
 /sbin/setuser app sed 's/{{DB_ENCODING}}/utf8/' -i ${APP_PATH}/config/database.yml
 /sbin/setuser app sed 's/#reconnect: false/reconnect: false/' -i ${APP_PATH}/config/database.yml
 /sbin/setuser app sed 's/{{DB_HOST}}/'"${DB_HOST}"'/' -i ${APP_PATH}/config/database.yml

@@ -1,5 +1,5 @@
 production:
-  adapter: "{{DB_ADAPTER}}"
+  adapter: "mysql2"
   encoding: "{{DB_ENCODING}}"
   reconnect: false
   database: "{{DB_NAME}}"

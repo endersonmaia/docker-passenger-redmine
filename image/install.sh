@@ -43,13 +43,14 @@ ln -sf ${DATA_PATH}/tmp/secret_token.rb ${APP_PATH}/config/initializers/secret_t
 chown -R app:app ${APP_PATH} ${DATA_PATH}
 chmod -R u+rwX ${DATA_PATH}
 
-# install gems, use cache if available
-if [ -d "${CACHE_DIR}" ]; then
-  /sbin/setuser app mkdir ${APP_PATH}/vendor/cache/
-  mv ${CACHE_DIR}/*.gem ${APP_PATH}/vendor/cache/
-fi
-
 cp ${BUILD_PATH}/config/redmine/database.yml ${APP_PATH}/config/database.yml
+
+# install gems, use cache if available
+/sbin/setuser app mkdir ${APP_PATH}/vendor/cache/
+for gem in $(ls -1 ${CACHE_DIR}/*.gem);do
+  mv $gem ${APP_PATH}/vendor/cache/
+done
+
 cd ${APP_PATH}; /sbin/setuser app bundle install --without development tests --path ${APP_PATH}/vendor/bundle
 
 # Configuring nginx
